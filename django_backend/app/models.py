@@ -2,42 +2,51 @@ from django.db import models
 
 # individual models for many-to-many relationship
 
+# text choices go here for organization
+class Type(models.TextChoices):
+    TV = "tv", "TV"
+    OVA = "ova", "OVA"
+    MOVIE = "movie", "Movie"
+    SPECIAL = "special", "Special"
+    ONA = "ona", "ONA"
+    MUSIC = "music", "Music"
+
+class Status(models.TextChoices):
+    FINISHED = "finished_airing", "Finished Airing"
+    CURRENTLY = "currently_airing", "Currently Airing"
+    NOT_YET = "not_yet_aired", "Not Yet Aired"
+
+class Rating(models.TextChoices):
+    G = "g", "G - All Ages"
+    PG = "pg", "PG - Children"
+    PG_13 = "pg_13", "PG-13 - Teens 13 or older"
+    R = "r", "R - 17+ (violence & profanity)"
+    R_PLUS = "r+", "R+ - Mild Nudity"
+    RX = "rx", "Rx - Hentai"
+
+class Season(models.TextChoices):
+    WINTER = "winter", "Winter"
+    SPRING = "spring", "Spring"
+    SUMMER = "summer", "Summer"
+    FALL = "fall", "Fall"
+
 class YuriAnime(models.Model):
     mal_id = models.IntegerField(null=False)
     image = models.ImageField(null=True, upload_to='images/anime/')
     trailer = models.URLField(null=True)
     titles = models.JSONField(null=False)
-    type = models.CharField(max_length=10,
-                            choices=[("tv", "TV"), 
-                                     ("ova", "OVA"), 
-                                     ("movie", "Movie"), 
-                                     ("special", "Special"), 
-                                     ("ova", "ONA"), 
-                                     ("music", "Music")])
+    type = models.CharField(null=True, max_length=10, choices=Type.choices)
     source = models.CharField(null=True, max_length=100)
     episodes = models.IntegerField(null=True)
-    status = models.CharField(max_length=50,
-                              choices=[("finished_airing", "Finished Airing"), 
-                                     ("currently_airing", "Currently Airing"), 
-                                     ("not_yet_aired", "Not yet aired")])
+    status = models.CharField(null=True, max_length=50, choices=Status.choices)
     aired = models.JSONField(null=True)
     duration = models.CharField(null=True, max_length=50)
-    rating = models.CharField(max_length=50,
-                              choices=[("g", "G - All Ages"),
-                                       ("pg", "PG - Children"),
-                                       ("pg_13",  "PG-13 - Teens 13 or older"), 
-                                       ("r", "R - 17+ (violence & profanity)"),
-                                       ("r+", "R+ - Mild Nudity"),
-                                       ("rx", "Rx - Hentai")])
+    rating = models.CharField(null=True, max_length=50, choices=Rating.choices)
     score = models.FloatField(null=True)
     scored_by = models.IntegerField(null=True)
     popularity = models.IntegerField(null=True)
     synopsis = models.CharField(null=True, max_length=10000)
-    season = models.CharField(null=True, max_length=50,
-                              choices=[("winter", "Winter"),
-                                       ("spring", "Spring"),
-                                       ("summer", "Summer"),
-                                       ("fall", "Fall")])
+    season = models.CharField(null=True, max_length=50, choices=Season.choices)
     year = models.IntegerField(null=True)
     producers = models.JSONField(null=True)
     studios = models.JSONField(null=True)

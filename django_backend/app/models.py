@@ -1,6 +1,15 @@
 from django.db import models
 
 # individual models for many-to-many relationship
+class Genre(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    type = models.CharField(max_length=20, choices=[("genre", "Genre"), ("explicit", "Explicit Genre")])
+
+class Studio(models.Model):
+    name = models.CharField(max_length=200, unique=True)
+
+class Producer(models.Model):
+    name = models.CharField(max_length=200, unique=True)
 
 # text choices go here for organization
 class Type(models.TextChoices):
@@ -48,10 +57,9 @@ class YuriAnime(models.Model):
     synopsis = models.CharField(null=True, max_length=10000)
     season = models.CharField(null=True, max_length=50, choices=Season.choices)
     year = models.IntegerField(null=True)
-    producers = models.JSONField(null=True)
-    studios = models.JSONField(null=True)
-    genres = models.JSONField(null=True)
-    explicit_genres = models.JSONField(null=True)
+    producers = models.ManyToManyField(Producer,null=True)
+    studios = models.ManyToManyField(Studio, null=True)
+    genres = models.ManyToManyField(Genre, null=True, related_name="animes")  # related_name for reverse lookups
     themes = models.JSONField(null=True)
 
     def __str__(self):

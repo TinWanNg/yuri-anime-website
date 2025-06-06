@@ -4,15 +4,27 @@ from django.db import models
 class Genre(models.Model):
     name = models.CharField(max_length=100, unique=True)
     type = models.CharField(max_length=20, choices=[("genre", "Genre"), ("explicit", "Explicit Genre")])
-
+    
+    def __str__(self):
+        return f"{self.name} ({self.type})" if self.name else "Unnamed Genre"
+    
 class Theme(models.Model):
     name = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return self.name or "Unnamed Theme"
 
 class Studio(models.Model):
     name = models.CharField(max_length=200, unique=True)
 
+    def __str__(self):
+        return self.name or "Unnamed Studio"
+
 class Producer(models.Model):
     name = models.CharField(max_length=200, unique=True)
+
+    def __str__(self):
+        return self.name or "Unnamed Producer"
 
 # text choices go here for organization
 class Type(models.TextChoices):
@@ -60,10 +72,10 @@ class Anime(models.Model):
     synopsis = models.CharField(null=True, max_length=10000)
     season = models.CharField(null=True, max_length=50, choices=Season.choices)
     year = models.IntegerField(null=True)
-    producers = models.ManyToManyField(Producer,null=True, related_name="animes")
-    studios = models.ManyToManyField(Studio, null=True, related_name="animes")
-    genres = models.ManyToManyField(Genre, null=True, related_name="animes")  # related_name for reverse lookups
-    themes = models.ManyToManyField(Theme, null=True, related_name="animes")
+    producers = models.ManyToManyField(Producer,blank=True, related_name="animes")
+    studios = models.ManyToManyField(Studio, blank=True, related_name="animes")
+    genres = models.ManyToManyField(Genre, blank=True, related_name="animes")  # related_name for reverse lookups
+    themes = models.ManyToManyField(Theme, blank=True, related_name="animes")
 
     def __str__(self):
         return self.titles["Default"]

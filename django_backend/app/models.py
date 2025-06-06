@@ -5,6 +5,9 @@ class Genre(models.Model):
     name = models.CharField(max_length=100, unique=True)
     type = models.CharField(max_length=20, choices=[("genre", "Genre"), ("explicit", "Explicit Genre")])
 
+class Theme(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+
 class Studio(models.Model):
     name = models.CharField(max_length=200, unique=True)
 
@@ -57,10 +60,10 @@ class Anime(models.Model):
     synopsis = models.CharField(null=True, max_length=10000)
     season = models.CharField(null=True, max_length=50, choices=Season.choices)
     year = models.IntegerField(null=True)
-    producers = models.ManyToManyField(Producer,null=True)
-    studios = models.ManyToManyField(Studio, null=True)
+    producers = models.ManyToManyField(Producer,null=True, related_name="animes")
+    studios = models.ManyToManyField(Studio, null=True, related_name="animes")
     genres = models.ManyToManyField(Genre, null=True, related_name="animes")  # related_name for reverse lookups
-    themes = models.JSONField(null=True)
+    themes = models.ManyToManyField(Theme, null=True, related_name="animes")
 
     def __str__(self):
-        pass
+        return self.titles["Default"]

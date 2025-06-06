@@ -39,7 +39,7 @@ class Season(models.TextChoices):
     SUMMER = "summer", "Summer"
     FALL = "fall", "Fall"
 
-class YuriAnime(models.Model):
+class Anime(models.Model):
     mal_id = models.IntegerField(null=False)
     image = models.ImageField(null=True, upload_to='images/anime/')
     trailer = models.URLField(null=True)

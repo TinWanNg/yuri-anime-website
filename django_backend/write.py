@@ -59,8 +59,7 @@ def write_anime(genre_id=26, page=1):
                 popularity = anime["popularity"],
                 synopsis=anime["synopsis"],
                 season=anime["season"],
-                year=anime["year"],
-                themes=format_to_dict(anime, "themes", "name", "url"),
+                year=anime["year"]
             )
             anime_.save()
 
@@ -77,7 +76,9 @@ def write_anime(genre_id=26, page=1):
             for producer in anime["producers"]:
                 producer_obj, _ = Producer.objects.get_or_create(name=producer["name"])
                 anime_.producers.add(producer_obj)
-            anime_.save()
+            for theme in anime["themes"]:
+                theme_obj, _ = Theme.objects.get_or_create(name=theme["name"])
+                anime_.themes.add(theme_obj)
 
             print(f"added {anime_.titles["Default"]} to db")
 

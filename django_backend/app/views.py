@@ -1,8 +1,10 @@
 from rest_framework.generics import ListAPIView
-from .models import Anime
-from .serializers import AnimeSerializer
-from django.db.models import Q
+from .models import *
+from .serializers import *
 
+"""
+state the allowed parameters for the endpoints here in views
+"""
 class AnimeListView(ListAPIView):
     serializer_class = AnimeSerializer
 

@@ -32,31 +32,33 @@ class Producer(models.Model):
 
 # text choices go here for organization
 class Type(models.TextChoices):
-    TV = "tv", "TV"
-    OVA = "ova", "OVA"
-    MOVIE = "movie", "Movie"
-    SPECIAL = "special", "Special"
-    ONA = "ona", "ONA"
-    MUSIC = "music", "Music"
+    TV = "TV"
+    OVA = "OVA"
+    MOVIE = "Movie"
+    SPECIAL = "Special"
+    TVSPECIAL = "TV Special"
+    ONA = "ONA"
+    MUSIC = "Music"
+    PV = "PV"
 
 class Status(models.TextChoices):
-    FINISHED = "finished_airing", "Finished Airing"
-    CURRENTLY = "currently_airing", "Currently Airing"
-    NOT_YET = "not_yet_aired", "Not Yet Aired"
+    FINISHED = "Finished Airing"
+    CURRENTLY = "Currently Airing"
+    NOT_YET = "Not yet aired"
 
 class Rating(models.TextChoices):
-    G = "g", "G - All Ages"
-    PG = "pg", "PG - Children"
-    PG_13 = "pg_13", "PG-13 - Teens 13 or older"
-    R = "r", "R - 17+ (violence & profanity)"
-    R_PLUS = "r+", "R+ - Mild Nudity"
-    RX = "rx", "Rx - Hentai"
+    G = "G - All Ages"
+    PG = "PG - Children"
+    PG_13 = "PG-13 - Teens 13 or older"
+    R = "R - 17+ (violence & profanity)"
+    R_PLUS = "R+ - Mild Nudity"
+    RX = "Rx - Hentai"
 
 class Season(models.TextChoices):
-    WINTER = "winter", "Winter"
-    SPRING = "spring", "Spring"
-    SUMMER = "summer", "Summer"
-    FALL = "fall", "Fall"
+    WINTER = "winter"
+    SPRING = "spring"
+    SUMMER = "summer"
+    FALL = "fall"
 
 class Anime(models.Model):
     mal_id = models.IntegerField(null=False)

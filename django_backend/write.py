@@ -26,7 +26,6 @@ def format_to_dict(item, key, subkey, subvalue):
     dic = {x[subkey]:x[subvalue] for x in li}
     return dic
 
-
 def write_anime(genre_id=26, page=1):
     while True:
         # 1. get data at current page
@@ -41,24 +40,31 @@ def write_anime(genre_id=26, page=1):
                 continue
             
             # 3. save to db
+            # 3.0. process text choices
+            def clean_choices(model, field):
+                if anime[field]:
+                    return model(anime[field])
+                else:
+                    return None
+
             # 3.1. anime model
             anime_ = Anime(
                 mal_id=anime["mal_id"],
                 image=anime["images"]["jpg"]["large_image_url"],
                 trailer=anime["trailer"]["url"],
                 titles=format_to_dict(anime, "titles", "type", "title"),
-                type=anime["type"],
+                type=clean_choices(Type, "type"),
                 source=anime["source"],
                 episodes=anime["episodes"],
-                status=anime["status"],
+                status=clean_choices(Status, "status"),
                 aired=anime["aired"],
                 duration=anime["duration"],
-                rating=anime["rating"],
+                rating=clean_choices(Rating, "rating"),
                 score = anime["score"],
                 scored_by = anime["scored_by"],
                 popularity = anime["popularity"],
                 synopsis=anime["synopsis"],
-                season=anime["season"],
+                season=clean_choices(Season, "season"),
                 year=anime["year"]
             )
             anime_.save()
@@ -92,13 +98,14 @@ def write_anime(genre_id=26, page=1):
     
     return "All data scraped"
 
+def clean():
+    from django.apps import apps
+    EXCLUDED_APPS = ["admin", "auth", "contenttypes", "sessions"]
+    for model in apps.get_models():
+        if model._meta.app_label not in EXCLUDED_APPS:
+            model.objects.all().delete()
 
-#from django.apps import apps
-#EXCLUDED_APPS = ["admin", "auth", "contenttypes", "sessions"]
-#for model in apps.get_models():
-#    if model._meta.app_label not in EXCLUDED_APPS:
-#        model.objects.all().delete()
-
+clean()
 print(f"{len(Anime.objects.all())} animes already in db. Adding more...")
 write_anime()
 print(f"Write done, now {len(Anime.objects.all())} animes in db")

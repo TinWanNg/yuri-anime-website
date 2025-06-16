@@ -2,6 +2,7 @@ from django.db import models
 
 # individual models for many-to-many relationship
 class Genre(models.Model):
+    mal_id = models.IntegerField(null=True)
     name = models.CharField(max_length=100, unique=True)
     type = models.CharField(max_length=20, choices=[("genre", "Genre"), ("explicit", "Explicit Genre")])
     
@@ -9,18 +10,21 @@ class Genre(models.Model):
         return f"{self.name} ({self.type})" if self.name else "Unnamed Genre"
     
 class Theme(models.Model):
+    mal_id = models.IntegerField(null=True)
     name = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
         return self.name or "Unnamed Theme"
 
 class Studio(models.Model):
+    mal_id = models.IntegerField(null=True)
     name = models.CharField(max_length=200, unique=True)
 
     def __str__(self):
         return self.name or "Unnamed Studio"
 
 class Producer(models.Model):
+    mal_id = models.IntegerField(null=True)
     name = models.CharField(max_length=200, unique=True)
 
     def __str__(self):

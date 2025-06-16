@@ -65,19 +65,19 @@ def write_anime(genre_id=26, page=1):
 
             # 3.2. add enum models
             for genre in anime["genres"]:
-                genre_obj, _ = Genre.objects.get_or_create(name=genre["name"], type="genre")
+                genre_obj, _ = Genre.objects.get_or_create(mal_id=genre["mal_id"], name=genre["name"], type="genre")
                 anime_.genres.add(genre_obj)
             for e_genre in anime["explicit_genres"]:
-                e_genre_obj, _ = Genre.objects.get_or_create(name=e_genre["name"], type="explicit")
+                e_genre_obj, _ = Genre.objects.get_or_create(mal_id=e_genre["mal_id"],name=e_genre["name"], type="explicit")
                 anime_.genres.add(e_genre_obj)
             for studio in anime["studios"]:
-                studio_obj, _ = Studio.objects.get_or_create(name=studio["name"])
+                studio_obj, _ = Studio.objects.get_or_create(mal_id=studio["mal_id"], name=studio["name"])
                 anime_.studios.add(studio_obj)
             for producer in anime["producers"]:
-                producer_obj, _ = Producer.objects.get_or_create(name=producer["name"])
+                producer_obj, _ = Producer.objects.get_or_create(mal_id=producer["mal_id"], name=producer["name"])
                 anime_.producers.add(producer_obj)
             for theme in anime["themes"]:
-                theme_obj, _ = Theme.objects.get_or_create(name=theme["name"])
+                theme_obj, _ = Theme.objects.get_or_create(mal_id=theme["mal_id"], name=theme["name"])
                 anime_.themes.add(theme_obj)
 
             print(f"added {anime_.titles["Default"]} to db")
@@ -93,7 +93,12 @@ def write_anime(genre_id=26, page=1):
     return "All data scraped"
 
 
-Anime.objects.all().delete()
+#from django.apps import apps
+#EXCLUDED_APPS = ["admin", "auth", "contenttypes", "sessions"]
+#for model in apps.get_models():
+#    if model._meta.app_label not in EXCLUDED_APPS:
+#        model.objects.all().delete()
+
 print(f"{len(Anime.objects.all())} animes already in db. Adding more...")
 write_anime()
 print(f"Write done, now {len(Anime.objects.all())} animes in db")

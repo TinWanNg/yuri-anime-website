@@ -17,6 +17,7 @@ class AnimeListView(ListAPIView):
         genre = self.request.query_params.get('genre')
         type = self.request.query_params.get('type')
         status = self.request.query_params.get('status')
+        rating = self.request.query_params.get('rating')
 
         if genre:
             queryset = queryset.filter(genres__id=genre)
@@ -26,6 +27,8 @@ class AnimeListView(ListAPIView):
             queryset = queryset.filter(type__iexact=type)
         if status and Status(status):
             queryset = queryset.filter(status__iexact=status)
+        if rating and Rating(rating):
+            queryset = queryset.filter(rating__iexact=rating)
 
         # Sort
         order_by = self.request.query_params.get('sort')

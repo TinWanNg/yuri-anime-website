@@ -10,9 +10,10 @@ django_backend/django_backend/settings.py
 *.sqlite3
 *.db
 
-# Node
 node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 dist/
+
+.dockerignore

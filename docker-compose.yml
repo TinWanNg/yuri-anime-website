@@ -1,0 +1,42 @@
+services:
+  backend:
+    build:
+      context: ./django_backend
+      dockerfile: Dockerfile
+    container_name: yuri-backend
+    volumes:
+      - ./django_backend:/app
+      - static_volume:/app/staticfiles
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=1
+      - DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1,backend
+      - DATABASE_URL=sqlite:///db.sqlite3
+    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    networks:
+      - yuri-network
+
+  frontend:
+    build:
+      context: ./react_frontend
+      dockerfile: Dockerfile
+    container_name: yuri-frontend
+    volumes:
+      - ./react_frontend:/app
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    env_file:
+      - ./react_frontend/.env
+    networks:
+      - yuri-network
+
+volumes:
+  static_volume:
+
+networks:
+  yuri-network:
+    driver: bridge
